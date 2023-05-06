@@ -1,42 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<title>Access forbidden!</title>
-<link rev="made" href="mailto:webmaster@rfc-editor.org" />
-<style type="text/css"><!--/*--><![CDATA[/*><!--*/ 
-    body { color: #000000; background-color: #FFFFFF; }
-    a:link { color: #0000CC; }
-    p, address {margin-left: 3em;}
-    span {font-size: smaller;}
-/*]]>*/--></style>
-</head>
-
-<body>
-<h1>Access forbidden!</h1>
-<p>
 
 
-  
+Network Working Group                                          J. Postel
+Request for Comments: 865                                            ISI
+                                                                May 1983
 
-    You don't have permission to access the requested object.
-    It is either read-protected or not readable by the server.
 
-  
 
-</p>
-<p>
-If you think this is a server error, please contact
-the <a href="mailto:webmaster@rfc-editor.org">webmaster</a>.
+                       Quote of the Day Protocol
 
-</p>
 
-<h2>Error 403</h2>
-<address>
-  <a href="/">www.rfc-editor.org</a><br />
-  <span>Apache</span>
-</address>
-</body>
-</html>
 
+
+This RFC specifies a standard for the ARPA Internet community.  Hosts on
+the ARPA Internet that choose to implement a Quote of the Day Protocol
+are expected to adopt and implement this standard.
+
+A useful debugging and measurement tool is a quote of the day service.
+A quote of the day service simply sends a short message without regard
+to the input.
+
+TCP Based Character Generator Service
+
+   One quote of the day service is defined as a connection based
+   application on TCP.  A server listens for TCP connections on TCP port
+   17.  Once a connection is established a short message is sent out the
+   connection (and any data received is thrown away).  The service
+   closes the connection after sending the quote.
+
+UDP Based Character Generator Service
+
+   Another quote of the day service is defined as a datagram based
+   application on UDP.  A server listens for UDP datagrams on UDP port
+   17.  When a datagram is received, an answering datagram is sent
+   containing a quote (the data in the received datagram is ignored).
+
+Quote Syntax
+
+   There is no specific syntax for the quote.  It is recommended that it
+   be limited to the ASCII printing characters, space, carriage return,
+   and line feed.  The quote may be just one or up to several lines, but
+   it should be less than 512 characters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Page 1]
+
