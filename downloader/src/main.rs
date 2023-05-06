@@ -17,8 +17,8 @@ async fn do_main() -> anyhow::Result<()> {
         .user_agent("github.com/aDotInTheVoid/except")
         .build()?;
 
-    let index = client.get(RFC_INDEX_URL).send().await?.text().await?;
-    // include_str!("../rfc-index.txt");
+    let index = //client.get(RFC_INDEX_URL).send().await?.text().await?;
+    include_str!("../rfc-index.txt");
 
     let Some((_, index)) = index
         .rsplit_once(
@@ -29,6 +29,7 @@ async fn do_main() -> anyhow::Result<()> {
 
     let line_start_regex = Regex::new(r"^[0-9]{4}")?;
     let format_regex = Regex::new(r"\(Format: .*TXT.*\)")?;
+    let name_regex = Regex::new(r"^\d{4} (([^.]|\.[^ ])+)\. ")?;
 
     let rfcs = index
         .split("\n\n")
@@ -38,10 +39,20 @@ async fn do_main() -> anyhow::Result<()> {
         .map(|s| Rfc {
             num: s[0..4].parse().unwrap(),
             has_txt: format_regex.is_match(&s),
+            name: name_regex
+                .captures(&s)
+                .map(|f| f[1].to_string())
+                .unwrap_or_default(),
         })
         .filter(|i| i.has_txt)
         .filter(|i| !i.path().exists()) // This tecnicly blocks on IO, but eh
         .collect::<Vec<_>>();
+
+    // // cargo r > ../names.txt
+    for i in rfcs {
+        println!("{:04} {}", i.num, i.name);
+    }
+    return Ok(());
 
     info!("found {} RFCs that need downloading", rfcs.len());
 
@@ -127,6 +138,7 @@ async fn get_url(client: &reqwest::Client, url: &str) -> anyhow::Result<String> 
 struct Rfc {
     num: u32,
     has_txt: bool,
+    name: String,
 }
 
 impl Rfc {
