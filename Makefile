@@ -6,6 +6,7 @@ rfc-numbers.txt: rfc-index.txt
 
 .PHONY: download
 download: rfc-numbers.txt
+	mkdir -p rfcs
 	parallel ./download.sh <  rfc-numbers.txt 
 
 .PHONY: clean
