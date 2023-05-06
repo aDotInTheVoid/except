@@ -2,7 +2,6 @@ use std::path::PathBuf;
 
 use anyhow::{bail, Context};
 use regex::Regex;
-use reqwest::Request;
 use tracing::{debug, info, trace, warn};
 
 const RFC_INDEX_URL: &str = "https://www.rfc-editor.org/rfc-index.txt";
@@ -18,8 +17,8 @@ async fn do_main() -> anyhow::Result<()> {
         .user_agent("github.com/aDotInTheVoid/except")
         .build()?;
 
-    let index = // client.get(RFC_INDEX_URL).send().await?.text().await?;
-        include_str!("../rfc-index.txt");
+    let index = client.get(RFC_INDEX_URL).send().await?.text().await?;
+    // include_str!("../rfc-index.txt");
 
     let Some((_, index)) = index
         .rsplit_once(
